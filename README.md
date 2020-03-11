@@ -1,19 +1,11 @@
 # ModelFlow
-A Python toolkit to manage models
+A Python toolkit to manage models.
 
-The easy way to start is here [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/IbHansen/modelflow/master). 
+The easy way to start is here [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/IbHansen/Modelflow_test/master)). 
 
 This will start **ModelFlow** as an online Jupyter notebook. Select one of the notebooks (files with the extension .ipynb). Some of the 
 notebooks are ModelFlow related. Other implement different model 
-
- - FRBUS  will start the FRB/US model from the Federal reserve board. 
- - Q-JEM will start the Quarterly Japanese Economic Model from Bank of Japan
- - ADAM will start the Anual Danish Aggregate Model for the Danish Statistical agency. 
  - Solow will implement a simple textybook Solow model. 
-
-You can also look at the python files of the system. Located at the **modelflow/** folder
-
-Alternative look at the *getting started* section later in this file. It explains how to run ModelFlow localy. 
 
 The **Pandas** library is a great library to handle all kinds of datamanipulation and transformations. 
 
@@ -101,8 +93,15 @@ You need Python 3.7+ with asssociated libraries. The easy way is to install Anac
 
 In addition to the standard packagdes in the Anaconda distribution you need: **Graphviz** and **cvxopt**: they can be installed by running a command window from the Anaconda prompt and execute theese commands 
 ```
-conda install graphviz 
-conda install cvxopt
+conda install modelflow -c ibh -c defaults -c conda-forge
+```
+
+Or if you want to make a seperate Conda enviroment do: 
+
+```
+conda create -n modelflow_env modelflow -c ibh -c defaults -c conda-forge
+conda activate modelflow_env
+
 ```
 You will find the anaconda prompt by searching "anaconda" in the start menu search field
 
