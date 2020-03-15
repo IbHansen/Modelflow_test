@@ -4,4 +4,4 @@ channels:
   - defaults
   - ibh  
 dependencies:
-  - modelflow
+  - modelflow >= "0.2.5"
