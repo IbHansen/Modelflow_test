@@ -12,10 +12,12 @@
 # Then press the run button in the user interaction section. 
 # 
 # Use the sliders to change the input parameters
+# 
+# This is a Jupyter Notebook running Python.  
 
 # ## Import some stuff
 
-# In[41]:
+# In[2]:
 
 
 import pandas as pd
@@ -24,7 +26,7 @@ from ipywidgets import interact,Dropdown,Checkbox,Layout,FloatSlider
 from modelsandbox import newmodel
 import modelclass as mc
 import modelmanipulation as mp 
-from modeljupyter import inputwidget
+from modeljupyter import inputwidget,get_alt,vis_alt3
 
 
 # ##  Specify Model
@@ -40,7 +42,7 @@ from modeljupyter import inputwidget
 #  - (-1) after a variable means the value the day before.
 #  - diff means the change in variable from the day before
 
-# In[42]:
+# In[3]:
 
 
 rcorona = '''             infection_rate        = min(rate_contact * probability_transmision * infectious(-1) / population(-1),1.0) 
@@ -64,31 +66,33 @@ rcorona = '''             infection_rate        = min(rate_contact * probability
 # # Create a model instance
 # We want to be able to calculate with the model. So a Python instance **mcorona** is created. 
 
-# In[43]:
+# In[4]:
 
 
 fcorona = mp.explode(rcorona)
 mcorona = newmodel(fcorona)
 
 
-# ## Now define some the data. 
+# ## Define an initial scenario 
 # Now a tabel with data is created. Each column containg a variable for the model. Each row contains the values for a day. 
 # 
 # The tabel is implemented as a Pandas Dataframe. 
 # 
 # **The initial population is set to 1,000,000**
+# **The parameters are for illustration and does not represent any real world estimates**
 # 
 # You don't have to understand the python code below. 
 
-# In[44]:
+# In[5]:
 
 
 DAYS = 500
 basedf = pd.DataFrame(index=range(DAYS))       # make an empty dataframe with DAYS rows
+#basedf.index.name = Days
 grunddf = mc.insertModelVar(basedf,mcorona)    # fill dataframe with variables and zeros 
+grunddf.index.name = 'Day'
 
-# now input some starting values 
-
+# now input some starting values, and parameters 
 grunddf.loc[0,'POPULATION']= 1000000           # we need a population for the first day 
 grunddf['SUSCEPTIBLE'] = grunddf['POPULATION'] # we also need a value for the number of susceptible
 grunddf.loc[1,'EXO_EXPOSED']             = 300           # we need a population for the first day 
@@ -99,20 +103,20 @@ grunddf.loc[:,'RATE_CONTACT']            = 4             #
 grunddf.loc[:,'PROBABILITY_TRANSMISION'] = 0.05           #  
 
 
-# ## Now run a baseline scenario without any infectious diseases
+# ## Run the scenario
 
-# In[45]:
+# In[6]:
 
 
 startdf = mcorona(grunddf,antal=20,first_test=10,silent=1)
 
 
 # ## Make eksperiments 
-# Use the sliders to define an experiment. Then press the run button. The model will solve, and the results can be inspected in the output widget. 
+# Now you can make your own experiment. Use the sliders to define an experiment. Then press the run button. The model will solve, and the results can be inspected in the output widget. 
 
 # ### Define the user-interface
 
-# In[46]:
+# In[7]:
 
 
 cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
@@ -121,18 +125,20 @@ cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
                      'Daily incuberation rate'    :{'var' : 'INCUBATION_RATE','min' : 0.0, 'max' : 1.0, 'value' : 0.1},
                      'Daily death rate'           :{'var' : 'DEAD_RATE','min' : 0.0, 'max' : 1.0, 'value' : 0.01},
                      'Daily recovery rate'        :{'var' : 'RECOVERY_RATE','min' : 0.0, 'max' : 1.0, 'value' : 0.1},
-                     'Daily rate of contact'            :{'var' : 'RATE_CONTACT','min' : 0.0, 'max' : 100, 'value' : 6,'step':1},
+                     'Daily rate of contact'      :{'var' : 'RATE_CONTACT','min' : 0.0, 'max' : 30, 'value' : 4,'step':1},
                      'Probability of transmission':{'var' : 'PROBABILITY_TRANSMISION','min' : 0.0, 'max' : 1.0, 'value' : 0.05},
                              },
-                 varpat='infectious recovered dead new_infectious new_recovered new_dead',base1name='4 Contact',alt1name='6 Contacts')
+                 varpat='infectious recovered dead new_infectious new_recovered new_dead')
 
 
 # # User interaction 
-# Press the Run button to run the experiment. Inspect the results in the tabs. 
+# Press the Run button to run an experiment. Inspect the results in the tabs. 
 # 
-# Increase the parameters and watch how spreading changes
+# Adjust the parameters, try to increase *Daily rate of contact* to 6.
+# 
+# Then press run and watch how the values changes.
 
-# In[47]:
+# In[8]:
 
 
 display(cow)
@@ -141,8 +147,8 @@ display(cow)
 # ## The structure of the model 
 # The mmodel instance has a number of capabilities. It can for instance draw the relationship between the variables. 
 
-# In[48]:
+# In[10]:
 
 
-mcorona.drawmodel(size= (2,2))
+mcorona.drawmodel(size= (2,2))  
 
