@@ -17,7 +17,7 @@
 
 # ## Import some stuff
 
-# In[2]:
+# In[ ]:
 
 
 import pandas as pd
@@ -26,7 +26,7 @@ from ipywidgets import interact,Dropdown,Checkbox,Layout,FloatSlider
 from modelsandbox import newmodel
 import modelclass as mc
 import modelmanipulation as mp 
-from modeljupyter import inputwidget,get_alt,vis_alt3
+from modeljupyter import inputwidget,get_alt,vis_alt3,vis_alt4,get_alt_dic,jupviz
 
 
 # ##  Specify Model
@@ -42,7 +42,7 @@ from modeljupyter import inputwidget,get_alt,vis_alt3
 #  - (-1) after a variable means the value the day before.
 #  - diff means the change in variable from the day before
 
-# In[3]:
+# In[ ]:
 
 
 rcorona = '''             infection_rate        = min(rate_contact * probability_transmision * infectious(-1) / population(-1),1.0) 
@@ -66,7 +66,7 @@ rcorona = '''             infection_rate        = min(rate_contact * probability
 # # Create a model instance
 # We want to be able to calculate with the model. So a Python instance **mcorona** is created. 
 
-# In[4]:
+# In[ ]:
 
 
 fcorona = mp.explode(rcorona)
@@ -83,7 +83,7 @@ mcorona = newmodel(fcorona)
 # 
 # You don't have to understand the python code below. 
 
-# In[5]:
+# In[ ]:
 
 
 DAYS = 500
@@ -105,7 +105,7 @@ grunddf.loc[:,'PROBABILITY_TRANSMISION'] = 0.05           #
 
 # ## Run the scenario
 
-# In[6]:
+# In[ ]:
 
 
 startdf = mcorona(grunddf,antal=20,first_test=10,silent=1)
@@ -116,7 +116,7 @@ startdf = mcorona(grunddf,antal=20,first_test=10,silent=1)
 
 # ### Define the user-interface
 
-# In[7]:
+# In[ ]:
 
 
 cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
@@ -138,17 +138,8 @@ cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
 # 
 # Then press run and watch how the values changes.
 
-# In[8]:
+# In[ ]:
 
 
 display(cow)
-
-
-# ## The structure of the model 
-# The mmodel instance has a number of capabilities. It can for instance draw the relationship between the variables. 
-
-# In[10]:
-
-
-mcorona.drawmodel(size= (2,2))  
 
