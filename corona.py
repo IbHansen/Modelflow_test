@@ -5,28 +5,31 @@
 # This is an experimental model made in a few hours. Inspirered by https://triplebyte.com/blog/modeling-infectious-diseases. 
 # 
 # The model is purely for testing the capabilities of ModelFlow, the parameters selected are for ilustration of the dynamic
-# and is not an estimate. 
+# and are not actual estimates. 
 # 
-# To run the model select **cell>run all** in the menu
+# This is a Jupyter Notebook running Python. 
 # 
-# Then press the run button in the user interaction section. 
+# The notebook is located on github here: https://github.com/IbHansen/Modelflow_test
+
+# **To run the model** select **cell>run all** in the menu
+# 
+# Then press the run button in the user interaction section in the end of the notebook 
 # 
 # Use the sliders to change the input parameters
 # 
-# This is a Jupyter Notebook running Python.  
 
 # ## Import some stuff
 
-# In[ ]:
+# In[1]:
 
 
 import pandas as pd
-from ipywidgets import interact,Dropdown,Checkbox,Layout,FloatSlider
+#from ipywidgets import interact,Dropdown,Checkbox,Layout,FloatSlider
 
-from modelsandbox import newmodel
-import modelclass as mc
-import modelmanipulation as mp 
-from modeljupyter import inputwidget,get_alt,vis_alt3,vis_alt4,get_alt_dic,jupviz
+from modelsandbox      import newmodel
+from modelmanipulation import explode
+from modeljupyter      import inputwidget
+from modelclass        import insertModelVar
 
 
 # ##  Specify Model
@@ -42,7 +45,7 @@ from modeljupyter import inputwidget,get_alt,vis_alt3,vis_alt4,get_alt_dic,jupvi
 #  - (-1) after a variable means the value the day before.
 #  - diff means the change in variable from the day before
 
-# In[ ]:
+# In[2]:
 
 
 rcorona = '''             infection_rate        = min(rate_contact * probability_transmision * infectious(-1) / population(-1),1.0) 
@@ -66,10 +69,10 @@ rcorona = '''             infection_rate        = min(rate_contact * probability
 # # Create a model instance
 # We want to be able to calculate with the model. So a Python instance **mcorona** is created. 
 
-# In[ ]:
+# In[3]:
 
 
-fcorona = mp.explode(rcorona)
+fcorona = explode(rcorona)
 mcorona = newmodel(fcorona)
 
 
@@ -83,13 +86,13 @@ mcorona = newmodel(fcorona)
 # 
 # You don't have to understand the python code below. 
 
-# In[ ]:
+# In[4]:
 
 
 DAYS = 500
 basedf = pd.DataFrame(index=range(DAYS))       # make an empty dataframe with DAYS rows
 #basedf.index.name = Days
-grunddf = mc.insertModelVar(basedf,mcorona)    # fill dataframe with variables and zeros 
+grunddf = insertModelVar(basedf,mcorona)    # fill dataframe with variables and zeros 
 grunddf.index.name = 'Day'
 
 # now input some starting values, and parameters 
@@ -105,7 +108,7 @@ grunddf.loc[:,'PROBABILITY_TRANSMISION'] = 0.05           #
 
 # ## Run the scenario
 
-# In[ ]:
+# In[5]:
 
 
 startdf = mcorona(grunddf,antal=20,first_test=10,silent=1)
@@ -116,7 +119,7 @@ startdf = mcorona(grunddf,antal=20,first_test=10,silent=1)
 
 # ### Define the user-interface
 
-# In[ ]:
+# In[6]:
 
 
 cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
@@ -138,7 +141,7 @@ cow = inputwidget(mcorona,startdf,modelopt={'silent':0},
 # 
 # Then press run and watch how the values changes.
 
-# In[ ]:
+# In[7]:
 
 
 display(cow)
