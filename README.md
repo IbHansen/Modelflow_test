@@ -99,13 +99,13 @@ Also bear in mind that ModelFlow is experimental. It is provided ”as is”, wi
 
 You need Python 3.7+ with asssociated libraries. The easy way is to install Anaconda Python is to download the distribution from [https://www.anaconda.com/distribution](https://www.anaconda.com/distribution)
 
-After instalation you can install ModelFlow by running a command window from the Anaconda prompt and execute theese commands 
+Now you can install ModelFlow by running a command window from the Anaconda prompt and execute theese commands 
 ```
 conda install modelflow -c ibh -c defaults -c conda-forge
 ```
 You will find the anaconda prompt by searching "anaconda" in the start menu search field
 
-Now you are in business. Try out one of the workbooks. to do this you
+Try out one of the workbooks. to do this you:
 ```
 click on the Adaconda prompth in the Anaconda folder
 cd <The location you have downloaded the workbooks>
