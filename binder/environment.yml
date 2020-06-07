@@ -5,4 +5,3 @@ channels:
   - conda-forge
 dependencies:
   - modelflow=0.2.14
-  - python=3.8
