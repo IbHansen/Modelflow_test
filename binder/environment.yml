@@ -1,7 +1,7 @@
 name: base
 channels:
-  - defaults
   - ibh  
+  - defaults
   - conda-forge
 dependencies:
   - modelflow=0.3.01
